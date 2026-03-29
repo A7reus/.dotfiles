@@ -1,0 +1,22 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    network_mode: host
+
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://192.168.1.2:8096
+
+    volumes:
+      - /home/and/.config/jellyfin:/config
+      - /home/and/.cache/jellyfin:/cache
+      - /mnt/data/media:/media:ro
+      - /mnt/data/.films:/films:ro
+
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+
+    group_add:
+      - "984"
+      - "988"
