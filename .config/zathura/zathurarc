@@ -1,1 +1,1 @@
-set selection-clipboard clipboard
+set selection-notification false
