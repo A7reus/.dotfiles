@@ -33,16 +33,16 @@ return {
 
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "rust_analyzer",
-          "lua_ls",
-          "taplo",
-          "bashls",
-          "clangd",
-          "pyright",
-          "tailwindcss",
-          "ts_ls",
-          "gopls",
-          "jdtls"
+          -- "rust_analyzer",
+          -- "lua_ls",
+          -- "taplo",
+          -- "bashls",
+          -- "clangd",
+          -- "pyright",
+          -- "tailwindcss",
+          -- "ts_ls",
+          -- "gopls",
+          -- "jdtls"
         },
         handlers = {
           function(server)
@@ -110,13 +110,13 @@ return {
 
 
       require("mason-null-ls").setup({
-        ensure_installed = { "black", "latexindent" },
+        ensure_installed = { "prettierd", "black" },
       })
 
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.prettierd,
           null_ls.builtins.formatting.black,
         },
       })
