@@ -46,8 +46,8 @@
     "format": "{icon}",
     "disable-scroll": false,
     "warp-on-scroll": false,
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'e+1' })\"",
+    "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'e-1' })\"",
   },
   "keyboard-state": {
     "numlock": true,
@@ -138,7 +138,7 @@
   "custom/net-speed": {
     "exec": "python3 ~/scripts/internet_speed.py",
     "interval": 2,
-    "format": "{}"
+    "format": "{}",
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
