@@ -9,8 +9,8 @@ services:
       - JELLYFIN_PublishedServerUrl=http://192.168.1.2:8096
 
     volumes:
-      - /home/and/.config/jellyfin:/config
-      - /home/and/.cache/jellyfin:/cache
+      - $HOME/.config/jellyfin:/config
+      - $HOME/.cache/jellyfin:/cache
       - /mnt/data/media:/media:ro
       - /mnt/data/.films:/films:ro
 
