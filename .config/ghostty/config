@@ -46,7 +46,7 @@ shell-integration = fish
 font-family = JetBrainsMono Nerd Font
 
 window-decoration = none
-theme = Ayu Mirage
+theme = TokyoNight Moon
 font-size = 14
 cursor-style = block
 mouse-hide-while-typing = true
