@@ -173,10 +173,13 @@ hl.config({
   -- Execute your favorite apps at launch
 })
 
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+
 hl.on("hyprland.start", function()
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
   hl.exec_cmd("wl-paste --watch cliphist store")
   hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
+  hl.exec_cmd("playerctld daemon")
   -- hl.exec_cmd("qbittorrent")
 end)

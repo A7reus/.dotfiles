@@ -1,19 +1,16 @@
 // -*- mode: jsonc -*-
 {
-  "layer": "top", // Waybar at top layer
-  "position": "bottom", // Waybar position (top|bottom|left|right)
-  "height": 25, // Waybar height (to be removed for auto height)
-  // "width": 1280, // Waybar width
-  "spacing": 0, // Gaps between modules (4px)
+  "layer": "top",
+  "position": "bottom",
+  "height": 25,
+  // "width": 1280,
+  "spacing": 0,
   "exclusive": true,
   "exclusive-zone": 25,
-  // Choose the order of the modules
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["hyprland/window"],
+  "modules-left": ["hyprland/workspaces", "hyprland/submap", "group/media"],
+  "modules-center": ["clock"],
   "modules-right": [
-    // "mpd",
-    // "idle_inhibitor",
-    // "pulseaudio",
+    "group/volume",
     "custom/net-speed",
     "network",
     // "power-profiles-daemon",
@@ -23,7 +20,7 @@
     // "backlight",
     // "keyboard-state",
     "tray",
-    "clock",
+    "battery",
   ],
   // Modules configuration
   // "hyprland/workspaces": {
@@ -97,15 +94,25 @@
   },
   "clock": {
     // "timezone": "America/New_York",
+    "format": "{:%a %b %d %H:%M}",
     "tooltip-format": "<big>{:%Y-%m-%d}</big>\n<tt><small>{calendar}</small></tt>",
+    "calender": {
+      "format": {
+        "today": "<span color='#75f1fa'><b>{}</b></span>",
+      },
+    },
     // "format-alt": "{:%Y-%m-%d}",
   },
   "cpu": {
-    "format": "{usage}% ",
+    "interval": 10,
+    "format": "{}% ",
     "tooltip": false,
+    "max-length": 10,
   },
   "memory": {
-    "format": "{}% ",
+    "interval": 30,
+    "format": "{percentage}% ",
+    "tooltip-format": "{used:0.1f}G/{total:0.1f}G used",
   },
   "temperature": {
     // "thermal-zone": 2,
@@ -130,45 +137,78 @@
     // "interface": "wlp2*", // (Optional) To force the use of this interface
     "format-wifi": "({signalStrength}%) ",
     "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
+    "tooltip-format": "{ifname} via {gwaddr}",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "Disconnected ⚠",
     "format-alt": "{ifname}: {ipaddr}/{cidr}",
+  },
+  "battery": {
+    // "bat": "BAT2",
+    "interval": 60,
+    "states": {
+      "warning": 20,
+      "critical": 15,
+    },
+    "events": {
+      "on-discharging-warning": "notify-send -u normal 'Low Battery'",
+      "on-discharging-critical": "notify-send -u critical 'Very Low Battery'",
+      "on-charging-80": "notify-send -u normal 'Battery Full!'",
+      "on-discharging": "notify-send -u normal 'Power Switch' Discharging",
+      "on-charging": "notify-send -u normal 'Power Switch' Charging'",
+    },
+    "format": "{capacity}% {icon}",
+    "format-icons": {
+      "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+      "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+    },
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", ""],
+    },
+    "scroll-step": 1,
+  },
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 100,
+    "orientation": "horizontal",
   },
   "custom/net-speed": {
     "exec": "python3 ~/scripts/internet_speed.py",
     "interval": 2,
     "format": "{}",
   },
-  "pulseaudio": {
-    // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon} {format_source}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": " {icon} {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""],
-    },
-    "on-click": "pavucontrol",
-  },
-  "custom/media": {
-    "format": "{icon} {}",
-    "return-type": "json",
-    "max-length": 40,
-    "format-icons": {
-      "spotify": "",
-      "default": "🎜",
-    },
+  "custom/current-playing-media": {
+    "exec": "$HOME/.config/waybar/custom_modules/media/current-playing-media.sh",
     "escape": true,
-    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null", // Script in resources folder
-    // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    "tooltip": false,
+    "on-click": "playerctl play-pause",
+    "on-click-middle": "playerctl previus",
+    "on-click-right": "playerctl next",
+  },
+  "custom/animate-media": {
+    "exec": "$HOME/.config/waybar/custom_modules/media/animate-media.sh",
+    "tooltip": false,
+  },
+  "custom/media-time": {
+    "exec": "$HOME/.config/waybar/custom_modules/media/media-time.sh",
+    "escape": true,
+    "interval": 1,
+    "tooltip": false,
+  },
+  "group/volume": {
+    "orientation": "horizontal",
+    "modules": ["pulseaudio", "pulseaudio/slider"],
+  },
+  "group/media": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/animate-media",
+      "custom/current-playing-media",
+      "custom/media-time",
+    ],
   },
 }
