@@ -12,8 +12,6 @@ if status is-interactive
   # end
 end
 
-# opencode
-fish_add_path $HOME/.opencode/bin
 
 
 # Added by Antigravity CLI installer
