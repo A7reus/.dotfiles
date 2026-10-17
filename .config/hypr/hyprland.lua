@@ -36,9 +36,14 @@ hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("wpctl set-mute -p $(hyprctl 
 hl.bind(mainMod .. " + SHIFT + space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("wofi --show drun"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp -d)\" - | wl-copy"))
-hl.bind(mainMod .. " + SHIFT + Print",
-  hl.dsp.exec_cmd("grim -g \"$(slurp -d)\" ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png"))
+
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("hyprshot --clipboard --mode region"))
+hl.bind(mainMod .. " + CTRL + Print",
+  hl.dsp.exec_cmd("hyprshot --output-folder $HOME/Pictures/Screenshots --mode region"))
+hl.bind(mainMod .. " + SHIFT + Print", hl.dsp.exec_cmd("hyprshot --clipboard --mode window"))
+hl.bind(mainMod .. " + CTRL + SHIFT + Print",
+  hl.dsp.exec_cmd("hyprshot --output-folder $HOME/Pictures/Screenshots --mode window"))
+
 hl.bind(mainMod .. " + t", hl.dsp.group.toggle())
 
 hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("wf-recorder --audio --file=/run/mount/recordings/$(uuidgen).mkv"))
